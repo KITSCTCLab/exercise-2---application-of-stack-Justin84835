@@ -8,104 +8,105 @@ class Evaluate:
 
     # Write your code here
 
-    def _init_(self, size):
+    def __init__(self, size):
         """Inits Evaluate with top, size_of_stack and stack.
-    Arguments:
-      size_of_stack: An integer to set the size of stack.
-    """
+        Arguments:
+          size_of_stack: An integer to set the size of stack.
+        """
         self.top = -1
         self.size_of_stack = size
         self.stack = []
 
     def isEmpty(self):
         """
-    Check whether the stack is empty.
-    Returns:
-      True if it is empty, else returns False.
-    """
-        if self.top == -1:
-            return True
-        else:
-            return False
-
-    def isFull(self):
+        Check whether the stack is empty.
+        Returns:
+          True if it is empty, else returns False.
         """
-    Check whether the stack is full.
-    Returns:
-      True if it is full, else returns False.
-    """
-        if self.top == self.size_of_stack - 1:
-            return True
+        # Write your code here
+        if self.top == -1:
+            return 1
         else:
-            return False
+            return 0
 
     def pop(self):
         """
-    Do pop operation if the stack is not empty.
-    Returns:
-      The data which is popped out if the stack is not empty.
-    """
-        if not (self.isEmpty()):
-            pop = self.stack.pop()
+        Do pop operation if the stack is not empty.
+        Returns:
+          The data which is popped out if the stack is not empty.
+        """
+        if not self.isEmpty():
+            self.stack.pop()
             self.top -= 1
-            return pop
+
+        # Write your code here
 
     def push(self, operand):
         """
-    Push the operand to stack if the stack is not full.
-    Arguments:
-      operand: The operand to be pushed.
-    """
-        if not (self.isFull()):
-            self.top += 1
+        Push the operand to stack if the stack is not full.
+        Arguments:
+          operand: The operand to be pushed.
+        """
+        if not self.top == (self.size_of_stack - 1):
             self.stack.append(operand)
+
+            self.top += 1
+        # Write your code here
 
     def validate_postfix_expression(self, expression):
         """
-    Check whether the expression is a valid postfix expression.
-    Arguments:
-      expression: A String which represents the expression to be validated.
-    Returns:
-      True if the expression is valid, else returns False.
-    """
+        Check whether the expression is a valid postfix expression.
+        Arguments:
+          expression: A String which represents the expression to be validated.
+        Returns:
+          True if the expression is valid, else returns False.
+        """
         for i in expression:
-            if i.isnumeric() == False:
-                if i in "+-/*^":
-                    return True
-                else:
-                    return False
-            else:
+            if i.isnumeric() or i in "+-*/^":
                 return True
+            else:
+                return False
+
+        # Write your code here
 
     def evaluate_postfix_expression(self, expression):
         """
-    Evaluate the postfix expression
-    Arguments:
-      expression: A String which represents the expression to be evaluated
-    Returns:
-      The result of evaluated postfix expression.
-    """
+        Evaluate the postfix expression
+        Arguments:
+          expression: A String which represents the the expression to be evaluated
+        Returns:
+          The result of evaluated postfix expression.
+        """
         for i in expression:
-            if i.isnumeric():
-                self.push(i)
+
+            if i == '+':
+                op2 = self.stack.pop()
+                op1 = self.stack.pop()
+                result = op1 + op2
+                self.push(result)
+            elif i == '*':
+                op2 = self.stack.pop()
+                op1 = self.stack.pop()
+                result = op1*op2
+                self.push(result)
+            elif i == '-':
+                op2 = self.stack.pop()
+                op1 = self.stack.pop()
+                result = op1 - op2
+                self.push(result)
+            elif i == '/':
+                op2 = self.stack.pop()
+                op1 = self.stack.pop()
+                result = op1 / op2
+                self.push(result)
             else:
-                a = int(self.pop())
-                b = int(self.pop())
-                if i == "+":
-                    self.push(b + a)
-                elif i == "-":
-                    self.push(b - a)
-                elif i == "*":
-                    self.push(b * a)
-                elif i == "/":
-                    self.push(b / a)
-                elif i == "^":
-                    self.push(b ** a)
+                self.push(int(i))
         if len(self.stack) > 1:
-            return "Invalid Expression"
+            return False
         else:
             return int(self.stack[0])
 
+    # Write your code here
 
 # Do not change the following code
 postfix_expression = input()  # Read postfix expression
